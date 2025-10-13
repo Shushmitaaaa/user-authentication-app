@@ -1,0 +1,86 @@
+//create a midlware called auth that verifies if a user is logged in and ends the request early if the user is not logged in.
+const express=require("express")
+const app= express();
+const jwt=require('jsonwebtoken')
+JWT_SECRET='fuckmylife'
+
+let users=[];
+
+app.use(express.json())
+
+app.post('/signup',function(req,res){
+    const username=req.body.username;
+    const password=req.body.password
+
+    users.push({
+        username:username,
+        password:password
+    })
+
+    res.json({
+        message:"Successfully signed up"
+    })
+})
+
+app.post('/signin',function(req,res){
+    const username=req.body.username;
+    const password=req.body.password
+
+    letfounduser=null;
+
+    for(let i=0;i<users.length;i++){
+        if(users[i].username===username && users[i].password===password){
+            founduser=users[i];
+        }
+    }
+
+    if(founduser){
+        const token=jwt.sign({
+            username:username
+        },JWT_SECRET);
+        res.json({
+            token:token
+        })
+    }else{
+        res.json({
+            message:"eroorrrr"
+        })
+    }
+})
+
+//middleware using it for authentication
+function auth(req,res,next){
+    const token=req.headers.token;
+    const decode=jwt.verify(token,JWT_SECRET);
+    
+
+    if(decode.username){
+        req.username=decode.username//modify the req and then send it to next func
+        next()
+    }else{
+        res.json({
+            message:"request ended"
+            
+        })
+    }
+}
+
+function details(req,res){
+    // const token=req.headers.token;
+    // const decode=jwt.verify(token,JWT_SECRET);
+    // const username=decode.username;
+    let founduser=null;
+    for(let i=0;i<users.length;i++){
+        if(users[i].username===req.username){
+            founduser=users[i];
+        }
+    }
+    res.json({
+        username:founduser.username,
+        password:founduser.password
+    })
+}
+
+app.get('/me',auth,details);
+
+app.listen(3000)
