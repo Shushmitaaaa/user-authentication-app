@@ -6,7 +6,15 @@ JWT_SECRET='fuckmylife'
 
 let users=[];
 
+
 app.use(express.json())
+
+
+//returning frontend part also on the backend oly to avoid cors(/ means get request sent to localhost)
+app.get('/',function(req,res){
+    res.sendFile(__dirname + '/public/index.html')
+})
+
 
 app.post('/signup',function(req,res){
     const username=req.body.username;
