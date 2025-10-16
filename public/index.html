@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login page</title>
 </head>
-<!-- <script src="index.js"></script> -->
+    <script src="index.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.7/axios.min.js"></script>
     <script>
         async function signup(){
@@ -23,16 +23,28 @@
 
         async function signin(){
             const username=document.getElementById("signin-username").value;
-            const password=document.getElementById("signin-username").value;
+            const password=document.getElementById("signin-password").value;
 
-            const response=axios.post('http://localhost:3000/signin',{
+            const response= await axios.post('http://localhost:3000/signin',{
                 username:username,
                 password:password
             })
 
+            //its like mapping key value pair
             localStorage.setItem("token",response.data.token)
             alert("Signed in successfully")
         }
+        async function getUserInfo(){
+            const response=await axios.get("http://localhost:3000/me",{
+                headers:{
+                    token:localStorage.getItem("token")
+
+                }
+                
+            })
+            document.getElementById("information").innerHTML=`username:${response.data.username} pasword:${response.data.password}`
+        }
+       
     </script>
 <body>
     
@@ -47,13 +59,14 @@
         Signin
     <input id="signin-username" type="text" name="username" placeholder="Username">
     <input id="signin-password" type="password" name="password" placeholder="Password">
-    <button onlcick="signin()">Submit</button>
+    <button onclick="signin()">Submit</button>
     </div>
     
 
     <div>
         User information:
         <div id="information"></div>
+        <button onclick="getUserInfo()">User Information</button>
     </div>
     <div>
         <button onclick="logout()">Logout</button>

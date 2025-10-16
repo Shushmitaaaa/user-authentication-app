@@ -3,14 +3,15 @@ const express=require("express")
 const app= express();
 const jwt=require('jsonwebtoken')
 JWT_SECRET='fuckmylife'
+const cors=require("cors")
 
 let users=[];
 
-
+app.use(cors())
 app.use(express.json())
 
 
-//returning frontend part also on the backend oly to avoid cors(/ means get request sent to localhost)
+//returning frontend part also on the same port as backend to avoid cors(/ means get request sent to localhost)
 app.get('/',function(req,res){
     res.sendFile(__dirname + '/public/index.html')
 })
