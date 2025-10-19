@@ -13,7 +13,7 @@ app.use(express.json())
 
 //returning frontend part also on the same port as backend to avoid cors(/ means get request sent to localhost)
 app.get('/',function(req,res){
-    res.sendFile(__dirname + '/public/index.html')
+    res.sendFile(Path.join(__dirname + 'index.html'))
 })
 
 
