@@ -51,7 +51,7 @@ app.post('/signin',function(req,res){
             token:token
         })
     }else{
-        res.json({
+        return res.status(401).json({
             message:"eroorrrr"
         })
     }
@@ -67,8 +67,8 @@ function auth(req,res,next){
         req.username=decode.username//modify the req and then send it to next func
         next()
     }else{
-        res.json({
-            message:"request ended"
+        return res.status(401).json({
+            message:"Invalid or expired"
             
         })
     }

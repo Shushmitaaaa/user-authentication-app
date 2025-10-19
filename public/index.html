@@ -7,17 +7,26 @@
 </head>
     <script src="index.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.7/axios.min.js"></script>
+    <link rel="stylesheet" href="index.css" />
     <script>
         async function signup(){
             const username=document.getElementById('signupusername').value
             const password=document.getElementById('signup-password').value
             //axios will send a req to the signup endpoint
-            await axios.post("http://localhost:3000/signup",{
+            try{
+                await axios.post("http://localhost:3000/signup",{
                 //body of my req
                 username: username,
                 password:password
-            });
-            alert("You are signed in")
+                });
+                alert("Sign up successfull")
+                document.getElementById("signup").style.display="none"
+                document.getElementById("signin").style.display="block"
+
+            }catch(err){
+                alert("Signup failed")
+            }
+            
 
         }
 
@@ -25,51 +34,87 @@
             const username=document.getElementById("signin-username").value;
             const password=document.getElementById("signin-password").value;
 
-            const response= await axios.post('http://localhost:3000/signin',{
+            try{
+                const response= await axios.post('http://localhost:3000/signin',{
                 username:username,
                 password:password
             })
 
-            //its like mapping key value pair
-            localStorage.setItem("token",response.data.token)
-            alert("Signed in successfully")
+                //its like mapping key value pair
+                localStorage.setItem("token",response.data.token)
+                alert("Sign in successfull")
+
+                getUserInfo()
+
+            }catch(err){
+                alert("Invalid credentials")
+                
+
+            }
+        
         }
         async function getUserInfo(){
-            const response=await axios.get("http://localhost:3000/me",{
+
+            try{
+                const response=await axios.get("http://localhost:3000/me",{
                 headers:{
                     token:localStorage.getItem("token")
 
                 }
                 
-            })
-            document.getElementById("information").innerHTML=`username:${response.data.username} pasword:${response.data.password}`
+                })
+                // document.getElementById("information").innerHTML=`username:${response.data.username} pasword:${response.data.password}`
+                document.getElementById("signup").style.display="none"
+                document.getElementById("signin").style.display="none"
+                document.querySelector(".title").style.display="none"
+
+                document.getElementById("info").style.display="block"
+                document.getElementById("information").innerHTML=`Welcome ${response.data.username}`
+
+            }catch(err){
+                alert("Session expired. Please sign in again.");
+                localStorage.removeItem("token");
+                document.getElementById("signup").style.display = "none";
+                document.getElementById("signin").style.display = "block";
+            }
+
+
+            
         }
+         window.onload = () => {
+            document.getElementById("signin").style.display = "none";
+            document.getElementById("info").style.display = "none";
+    };
        
     </script>
 <body>
-    
-    <div>
-        Signup
-        <input id="signupusername" type="text" name="username" placeholder="Username">
-        <input id="signup-password" type="password" name="password" placeholder="Password">
-        <button onclick="signup()">Submit</button>
+    <div class="container">
         
-    </div>
-    <div>
-        Signin
-    <input id="signin-username" type="text" name="username" placeholder="Username">
-    <input id="signin-password" type="password" name="password" placeholder="Password">
-    <button onclick="signin()">Submit</button>
-    </div>
-    
+        <div class="login-box">
+        
+            <div id="signup">
+                <h1 class="title">Sign-up</h1><br>
+               
+                <input id="signupusername" type="text" name="username" placeholder="Username"><br>
+                <input id="signup-password" type="password" name="password" placeholder="Password"><br>
+                <button onclick="signup()">Submit</button>
+                
+            </div>
+            
+            <div id="signin">
+                <h1 class="title">Sign-in</h1><br>
+               
+            <input id="signin-username" type="text" name="username" placeholder="Username"><br>
+            <input id="signin-password" type="password" name="password" placeholder="Password"><br>
+            <button onclick="signin()">Submit</button>
+            </div>
+            
 
-    <div>
-        User information:
-        <div id="information"></div>
-        <button onclick="getUserInfo()">User Information</button>
-    </div>
-    <div>
-        <button onclick="logout()">Logout</button>
+            <div id="info">
+                <h2 id="information"></h2><br>
+                <img id="image" src="hiimage.jpg" alt="hello">
+            </div>
+        </div>
     </div>
     
 </body>
