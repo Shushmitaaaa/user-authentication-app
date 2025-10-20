@@ -6,10 +6,13 @@ const JWT_SECRET=process.env.JWT_SECRET
 const cors=require("cors")
 const path = require("path");
 
+
 let users=[];
+
 
 app.use(cors())
 app.use(express.json())
+app.use(express.static(path.join(__dirname, 'public')));
 
 
 //returning frontend part also on the same port as backend to avoid cors(/ means get request sent to localhost)
