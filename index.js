@@ -1,8 +1,9 @@
 //create a midlware called auth that verifies if a user is logged in and ends the request early if the user is not logged in.
+require('dotenv').config();
 const express=require("express")
 const app= express();
 const jwt=require('jsonwebtoken')
-const JWT_SECRET=process.env.JWT_SECRET
+JWT_SECRET=process.env.JWT_SECRET
 const cors=require("cors")
 const path = require("path");
 
