@@ -17,9 +17,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 //returning frontend part also on the same port as backend to avoid cors(/ means get request sent to localhost)
-app.get('/',function(req,res){
-    res.sendFile(path.join(__dirname , 'index.html'))
-})
+// app.get('/',function(req,res){
+//     res.sendFile(path.join(__dirname , 'public','index.html'))
+// })
 
 
 app.post('/signup',function(req,res){

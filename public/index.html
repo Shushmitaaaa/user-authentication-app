@@ -12,7 +12,7 @@
             const password=document.getElementById('signup-password').value
             //axios will send a req to the signup endpoint
             try{
-                await axios.post("http://localhost:3000/signup",{
+                await axios.post("/signup",{
                 //body of my req
                 username: username,
                 password:password
@@ -33,7 +33,7 @@
             const password=document.getElementById("signin-password").value;
 
             try{
-                const response= await axios.post('http://localhost:3000/signin',{
+                const response= await axios.post('/signin',{
                 username:username,
                 password:password
             })
@@ -54,7 +54,7 @@
         async function getUserInfo(){
 
             try{
-                const response=await axios.get("http://localhost:3000/me",{
+                const response=await axios.get("/me",{
                 headers:{
                     token:localStorage.getItem("token")
 
