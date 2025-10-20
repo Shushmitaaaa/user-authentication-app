@@ -2,8 +2,9 @@
 const express=require("express")
 const app= express();
 const jwt=require('jsonwebtoken')
-JWT_SECRET=process.env.JWT_SECRET
+const JWT_SECRET=process.env.JWT_SECRET
 const cors=require("cors")
+const path = require("path");
 
 let users=[];
 
@@ -13,7 +14,7 @@ app.use(express.json())
 
 //returning frontend part also on the same port as backend to avoid cors(/ means get request sent to localhost)
 app.get('/',function(req,res){
-    res.sendFile(path.join(__dirname + 'index.html'))
+    res.sendFile(path.join(__dirname , 'index.html'))
 })
 
 
